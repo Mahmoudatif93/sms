@@ -1,0 +1,58 @@
+post:
+  summary: Create a new organization
+  operationId: createOrganization
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - countryCode
+          properties:
+            name:
+              type: string
+              description: Name of the organization
+              example: My New Organization
+            countryCode:
+              type: string
+              maxLength: 2
+              description: ISO3166-1 country code
+              example: EG
+  responses:
+    '201':
+      description: Organization created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/organization.yaml
+    '400':
+      description: Validation Error(s)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation Error(s)
+              data:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+                example:
+                  name:
+                    - "The name field is required."
+    '401':
+      description: Unauthorized – authentication failed

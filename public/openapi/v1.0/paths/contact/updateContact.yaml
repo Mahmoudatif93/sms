@@ -1,0 +1,77 @@
+patch:
+  summary: Update a contact
+  operationId: updateContact
+  tags:
+    - Contacts
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: workspaceId
+      in: path
+      required: true
+      description: ID of the workspace
+      schema:
+        type: string
+    - name: contactId
+      in: path
+      required: true
+      description: ID of the contact
+      schema:
+        type: string
+  requestBody:
+    required: true
+    description: Contact details to be updated
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            identifiers:
+              type: array
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    example: phone-number
+                  value:
+                    type: string
+                    example: "+201234567890"
+            attributes:
+              type: object
+              description: Optional attributes to update
+              additionalProperties:
+                type: string
+  responses:
+    '200':
+      description: Contact updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Contact updated successfully
+    '400':
+      description: Validation Error(s)
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/validator_error_response.yaml
+    '404':
+      description: Contact not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Contact not found

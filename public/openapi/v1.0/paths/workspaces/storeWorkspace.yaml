@@ -1,0 +1,79 @@
+post:
+  tags:
+    - Workspaces
+  summary: Create a new workspace for an organization
+  operationId: storeWorkspace
+  security:
+    - apiAuth: []
+  parameters:
+    - name: organizationId
+      in: path
+      required: true
+      description: ID of the organization
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - description
+          properties:
+            name:
+              type: string
+              example: Workspace Name
+            description:
+              type: string
+              example: Workspace description.
+  responses:
+    '200':
+      description: Workspace created successfully for organization
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Workspace created successfully for organization
+              data:
+                $ref: "../../components/schemas/Workspace.yaml"
+    '400':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation Error(s)
+              errors:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+    '404':
+      description: Organization not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Organization not found

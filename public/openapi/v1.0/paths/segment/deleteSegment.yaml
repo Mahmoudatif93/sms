@@ -1,0 +1,23 @@
+delete:
+  tags:
+    - Segments
+  summary: Delete a segment
+  operationId: deleteSegment
+  parameters:
+    - name: workspaceId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+    - name: segmentId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Segment deleted successfully
+    '404':
+      description: Segment not found in this workspace

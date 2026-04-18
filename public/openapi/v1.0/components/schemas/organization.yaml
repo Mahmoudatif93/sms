@@ -1,0 +1,72 @@
+type: object
+title: Organization
+description: Organization details
+required:
+  - id
+  - name
+  - status
+  - owner
+properties:
+  id:
+    type: string
+    format: uuid
+    description: Unique identifier for the organization
+    example: 123e4567-e89b-12d3-a456-426614174000
+  name:
+    type: string
+    description: The name of the organization
+    example: My Organization
+  avatarUrl:
+    type: string
+    format: uri
+    nullable: true
+    description: URL of the organization's avatar
+    example: https://example.com/avatar.png
+  status:
+    type: string
+    description: The current status of the organization
+    example: active
+  type:
+    type: string
+    description: Type of organization
+    example: business
+  owner:
+    type: string
+    description: Name of the owner
+    example: John Doe
+  ownerID:
+    type: integer
+    description: User ID of the owner
+    example: 42
+  commercial_registration_number:
+    type: string
+    nullable: true
+    description: Commercial registration number
+  unified_number:
+    type: string
+    nullable: true
+    description: Unified business number
+  file_commercial_register:
+    type: string
+    nullable: true
+    description: URL or identifier for commercial register file
+  file_value_added_tax_certificate:
+    type: string
+    nullable: true
+    description: URL or identifier for VAT certificate file
+  createdAt:
+    type: string
+    format: date-time
+    description: Date the organization was created
+  updatedAt:
+    type: string
+    format: date-time
+    description: Date the organization was last updated
+  isOwner:
+    type: boolean
+    description: Whether the current user is the owner
+    example: true
+  isCurrent:
+    type: boolean
+    description: Whether this is the currently active organization
+    example: true

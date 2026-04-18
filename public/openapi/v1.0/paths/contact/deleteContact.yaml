@@ -1,0 +1,47 @@
+delete:
+  summary: Delete a contact
+  operationId: deleteContact
+  tags:
+    - Contacts
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: workspaceId
+      in: path
+      required: true
+      description: ID of the workspace
+      schema:
+        type: string
+    - name: contactId
+      in: path
+      required: true
+      description: ID of the contact
+      schema:
+        type: string
+  responses:
+    '200':
+      description: Contact deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Contact deleted successfully
+    '404':
+      description: Contact not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Contact not found

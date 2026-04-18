@@ -1,0 +1,73 @@
+post:
+  summary: Bulk import contacts
+  operationId: importContacts
+  tags:
+    - Contacts
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: workspaceId
+      in: path
+      required: true
+      description: ID of the workspace
+      schema:
+        type: string
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            single_phone_number:
+              type: string
+              description: Single phone number to import
+              example: "+966512345678"
+            phone_numbers_text:
+              type: string
+              description: Plain text containing phone numbers
+            phone_numbers_file:
+              type: string
+              format: binary
+              description: Excel file containing phone numbers
+  responses:
+    '200':
+      description: Import completed
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Import completed
+              data:
+                type: object
+                properties:
+                  created:
+                    type: array
+                    items:
+                      $ref: ../../components/schemas/Contact.yaml
+                  invalid_entries:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        raw:
+                          type: object
+                          description: Original row data
+                        normalized_phone:
+                          type: string
+                          example: "+966512345678"
+                        error:
+                          type: string
+                          example: Invalid phone number format
+    '400':
+      description: Validation Error(s)
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/ValidatorErrorResponse.yaml

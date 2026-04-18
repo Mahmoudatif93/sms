@@ -1,0 +1,49 @@
+type: object
+title: IAMPolicy
+description: Represents an IAM Policy assigned to users or roles in an organization.
+required:
+  - id
+  - name
+  - type
+  - scope
+  - organization_id
+properties:
+  id:
+    type: integer
+    description: Unique identifier for the IAM policy
+    example: 1
+  name:
+    type: string
+    description: Policy name
+    example: Admin Access
+  description:
+    type: string
+    nullable: true
+    description: Policy description
+    example: Full administrative access to the system
+  type:
+    type: string
+    description: Type of policy (e.g., system, custom)
+    example: custom
+  scope:
+    type: string
+    description: Scope of the policy (e.g., global, organization)
+    example: organization
+  organization_id:
+    type: string
+    format: uuid
+    description: ID of the organization the policy belongs to
+    example: 123e4567-e89b-12d3-a456-426614174000
+  definitions:
+    type: array
+    description: Linked permission definitions
+    items:
+      $ref: ./iam_policy_definition.yaml
+  created_at:
+    type: integer
+    description: Unix timestamp when the policy was created
+    example: 1717000000
+  updated_at:
+    type: integer
+    description: Unix timestamp when the policy was last updated
+    example: 1717100000

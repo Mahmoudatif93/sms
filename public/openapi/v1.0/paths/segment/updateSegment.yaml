@@ -1,0 +1,33 @@
+put:
+  tags:
+    - Segments
+  summary: Update a segment
+  operationId: updateSegment
+  parameters:
+    - name: workspaceId
+      in: path
+      required: true
+      description: Workspace UUID
+      schema:
+        type: string
+        format: uuid
+    - name: segmentId
+      in: path
+      required: true
+      description: Segment UUID
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: "../../../components/schemas/Segment.yaml"
+  responses:
+    '200':
+      description: Segment updated successfully
+    '400':
+      description: Validation error
+    '404':
+      description: Segment not found

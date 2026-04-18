@@ -1,0 +1,33 @@
+delete:
+  summary: Delete an IAM policy
+  operationId: deleteIAMPolicy
+  tags:
+    - IAM
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID of the IAM policy to delete
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: IAM policy deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: IAM Policy deleted successfully
+    '401':
+      description: Unauthorized – authentication failed
+    '404':
+      description: IAM policy not found

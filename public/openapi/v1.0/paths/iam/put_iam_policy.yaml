@@ -1,0 +1,62 @@
+put:
+  summary: Update an IAM policy
+  operationId: updateIAMPolicy
+  tags:
+    - IAM
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: id
+      in: path
+      required: true
+      description: ID of the IAM policy
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              maxLength: 255
+              description: Policy name
+              example: Admin Access
+            description:
+              type: string
+              maxLength: 500
+              nullable: true
+              description: Policy description
+              example: Grants administrative rights
+  responses:
+    '200':
+      description: IAM policy updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/iam_policy.yaml
+    '400':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              message:
+                type: string
+                example: The given data was invalid.
+              errors:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+    '401':
+      description: Unauthorized – authentication failed
+    '404':
+      description: IAM policy not found

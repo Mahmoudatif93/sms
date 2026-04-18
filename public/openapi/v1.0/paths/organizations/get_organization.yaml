@@ -1,0 +1,27 @@
+get:
+  summary: Get an organization by ID
+  operationId: getOrganization
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: The organization identifier
+      schema:
+        type: string
+        format: uuid
+  responses:
+    '200':
+      description: Organization found
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/organization.yaml
+    '404':
+      description: Organization not found
+    '401':
+      description: Unauthorized

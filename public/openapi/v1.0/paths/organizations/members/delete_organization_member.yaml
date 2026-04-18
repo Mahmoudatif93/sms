@@ -1,0 +1,59 @@
+delete:
+  summary: Remove a member from an organization
+  operationId: deleteOrganizationMember
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: The UUID of the organization
+      schema:
+        type: string
+        format: uuid
+    - name: memberId
+      in: path
+      required: true
+      description: The ID of the member to remove
+      schema:
+        type: integer
+  responses:
+    '200':
+      description: Member deleted successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Member deleted successfully
+              data:
+                type: string
+                nullable: true
+                example: null
+    '404':
+      description: Member not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Member not found
+              data:
+                type: string
+                nullable: true
+                example: null
+    '401':
+      description: Unauthorized

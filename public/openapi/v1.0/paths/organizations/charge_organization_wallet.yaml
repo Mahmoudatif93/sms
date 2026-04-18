@@ -1,0 +1,99 @@
+post:
+  summary: Charge an organization's wallet
+  operationId: chargeOrganizationWallet
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: UUID of the organization to charge
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - amount
+            - service
+          properties:
+            amount:
+              type: integer
+              description: Amount to charge
+              example: 500
+            service:
+              type: string
+              enum: [sms, other]
+              description: Service to charge for
+              example: sms
+            sms_point:
+              type: integer
+              nullable: true
+              description: Required only if service is `sms`
+              example: 1000
+            reason:
+              type: string
+              maxLength: 255
+              nullable: true
+              description: Optional reason for the charge
+              example: "Monthly SMS top-up"
+  responses:
+    '200':
+      description: Charge processed successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Charge processed successfully
+              data:
+                type: string
+                nullable: true
+                example: null
+    '422':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation Error(s)
+              data:
+                type: object
+                example:
+                  amount:
+                    - "The amount field is required."
+    '500':
+      description: Server error while processing charge
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Error processing charge: Service class not found
+              data:
+                type: string
+                nullable: true
+                example: null

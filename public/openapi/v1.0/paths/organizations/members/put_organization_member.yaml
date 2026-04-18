@@ -1,0 +1,99 @@
+put:
+  summary: Update a member's roles and workspaces within an organization
+  operationId: updateOrganizationMember
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: UUID of the organization
+      schema:
+        type: string
+        format: uuid
+    - name: memberId
+      in: path
+      required: true
+      description: ID of the member to update
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - workspaces
+            - roles
+          properties:
+            workspaces:
+              type: array
+              minItems: 1
+              items:
+                type: string
+                format: uuid
+              description: List of workspace IDs (UUIDs) that belong to the organization
+              example:
+                - "0de1a204-7e45-4cc7-9a9f-eedbfc4a12d7"
+                - "5c9c4c9e-7c33-4a30-a041-7ea033d16927"
+            roles:
+              type: array
+              minItems: 1
+              items:
+                type: integer
+              description: List of IAM role IDs (must exist)
+              example: [1, 2]
+  responses:
+    '200':
+      description: Member updated successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Member update
+              data:
+                $ref: ../../../components/schemas/organization_member.yaml
+    '400':
+      description: Validation errors
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation Error(s)
+              data:
+                type: object
+                example:
+                  workspaces.0:
+                    - The selected workspace is not valid for this organization.
+    '404':
+      description: Member not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Member not found
+              data:
+                type: object
+                example: null

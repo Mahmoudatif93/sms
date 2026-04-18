@@ -1,0 +1,37 @@
+openapi: 3.1.1
+info:
+  title: Dreams CRM API
+  version: 1.0.0
+  description: API documentation for Dreams CRM
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: /
+    description: Default (Relative) Server
+
+paths:
+  /v1.0/organizations/{organization}:
+    $ref: ./v1.0/paths/organizations/get_organization.yaml
+  /v1.0/organizations:
+    $ref: ./v1.0/paths/organizations/post_organization.yaml
+
+  /v1.0/{channel}/message-templates:
+    $ref: ./v1.0/paths/templates/post_template.yaml
+
+components:
+  schemas:
+    Organization:
+    $ref: ./v1.0/components/schemas/organization.yaml
+
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    AccessKeyAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "Use Access Key in the format: AccessKey ak_xxx.yyy"

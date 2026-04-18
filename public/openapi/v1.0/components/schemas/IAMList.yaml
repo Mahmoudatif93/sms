@@ -1,0 +1,57 @@
+IAMList:
+  type: object
+  required:
+    - name
+  properties:
+    id:
+      type: string
+      format: uuid
+      readOnly: true
+      example: "123e4567-e89b-12d3-a456-426614174000"
+    name:
+      type: string
+      example: "VIP Clients"
+    workspace_id:
+      type: string
+      format: uuid
+      readOnly: true
+      example: "workspace-abc-123"
+    type:
+      type: string
+      readOnly: true
+      example: "general"
+    description:
+      type: string
+      nullable: true
+      example: "List of high-value clients"
+    parent_id:
+      type: string
+      format: uuid
+      nullable: true
+      example: "111e4567-e89b-12d3-a456-426614171111"
+    contacts_count:
+      type: integer
+      readOnly: true
+      example: 4
+    contact_ids:
+      type: array
+      writeOnly: true
+      items:
+        type: string
+        format: uuid
+        example: "contact-uuid-1"
+    contacts:
+      type: array
+      readOnly: true
+      items:
+        $ref: '#/components/schemas/Contact'
+    created_at:
+      type: string
+      format: date-time
+      readOnly: true
+      example: "2025-07-13T12:34:56Z"
+    updated_at:
+      type: string
+      format: date-time
+      readOnly: true
+      example: "2025-07-13T12:35:30Z"

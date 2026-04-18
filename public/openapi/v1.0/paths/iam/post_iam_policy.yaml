@@ -1,0 +1,88 @@
+post:
+  summary: Create a new IAM policy for an organization
+  operationId: createIAMPolicy
+  tags:
+    - IAM
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: The organization identifier
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - name
+            - definitions
+          properties:
+            name:
+              type: string
+              maxLength: 255
+              description: Name of the IAM policy
+              example: View Only Policy
+            description:
+              type: string
+              nullable: true
+              description: Optional policy description
+              example: Grants read-only access to selected modules
+            definitions:
+              type: array
+              minItems: 1
+              items:
+                type: integer
+              description: List of IAM policy definition IDs
+              example: [1, 2, 3]
+  responses:
+    '201':
+      description: IAM Policy created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/iam_policy.yaml
+    '400':
+      description: Validation error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Validation Error(s)
+              data:
+                type: object
+                additionalProperties:
+                  type: array
+                  items:
+                    type: string
+    '401':
+      description: Unauthorized – authentication failed
+    '500':
+      description: Internal server error
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Failed to create IAM Policy
+              data:
+                type: object
+                example:
+                  error: Something went wrong while saving

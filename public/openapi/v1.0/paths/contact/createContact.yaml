@@ -1,0 +1,73 @@
+post:
+  summary: Create a new contact
+  operationId: createContact
+  tags:
+    - Contacts
+  security:
+    - BearerAuth: []
+  parameters:
+    - name: workspaceId
+      in: path
+      required: true
+      description: ID of the workspace
+      schema:
+        type: string
+  requestBody:
+    required: true
+    description: Data to create the contact
+    content:
+      application/json:
+        schema:
+          type: object
+          properties:
+            identifiers:
+              type: array
+              description: List of identifiers (email-address or phone-number required)
+              items:
+                type: object
+                properties:
+                  key:
+                    type: string
+                    example: email-address
+                  value:
+                    type: string
+                    example: test@example.com
+            attributes:
+              type: object
+              description: Optional attributes for the contact
+              properties:
+                first-name:
+                  type: string
+                  example: John
+                last-name:
+                  type: string
+                  example: Doe
+                subscribed-whatsapp:
+                  type: boolean
+                  example: true
+  responses:
+    '200':
+      description: Contact created successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/contact.yaml
+    '400':
+      description: Validation Error(s)
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/validator_error_response.yaml
+    '404':
+      description: Workspace not found
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Workspace not found

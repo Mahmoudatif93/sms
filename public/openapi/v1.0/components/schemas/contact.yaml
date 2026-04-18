@@ -1,0 +1,90 @@
+# File: v1/components/schemas/contact.yaml
+
+Contact:
+  type: object
+  title: Contact
+  description: Represents a contact entity
+  required:
+    - id
+    - workspace_id
+  properties:
+    id:
+      type: string
+      format: uuid
+      example: "5b3f12e2-8c2a-4c3d-b728-cde5388b905e"
+    workspace_id:
+      type: string
+      format: uuid
+      example: "e4d1bc94-fde2-11ed-be56-0242ac120002"
+    identifiers:
+      type: array
+      items:
+        $ref: './identifier.yaml#/Identifier'
+    attributes:
+      type: object
+      additionalProperties:
+        type: string
+      example:
+        first-name: "John"
+        last-name: "Doe"
+        subscribed-whatsapp: true
+
+Identifier:
+  type: object
+  title: Identifier
+  description: Unique identifier for a contact such as phone or email
+  required:
+    - key
+    - value
+  properties:
+    key:
+      type: string
+      enum: [email-address, phone-number]
+      example: phone-number
+    value:
+      type: string
+      example: "+201234567890"
+
+ValidatorErrorResponse:
+  type: object
+  title: ValidatorErrorResponse
+  description: Validation failure response format
+  properties:
+    success:
+      type: boolean
+      example: false
+    message:
+      type: string
+      example: Validation Error(s)
+    data:
+      type: object
+      additionalProperties:
+        type: array
+        items:
+          type: string
+      example:
+        identifiers.0.key:
+          - The key must be either "email-address" or "phone-number".
+        identifiers:
+          - At least one identifier must have "email-address" or "phone-number" as the key.
+
+PaginatedContacts:
+  type: object
+  title: PaginatedContacts
+  properties:
+    data:
+      type: array
+      items:
+        $ref: '#/Contact'
+    current_page:
+      type: integer
+      example: 1
+    last_page:
+      type: integer
+      example: 5
+    per_page:
+      type: integer
+      example: 15
+    total:
+      type: integer
+      example: 74

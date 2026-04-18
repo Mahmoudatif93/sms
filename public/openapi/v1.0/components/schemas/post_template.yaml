@@ -1,0 +1,88 @@
+type: object
+required:
+  - name
+  - category
+  - language
+  - components
+properties:
+  name:
+    type: string
+    maxLength: 512
+    pattern: '^[a-z0-9_]+$'
+    example: seasonal_promo
+    description: Template name (lowercase letters, numbers, underscores only)
+
+  language:
+    type: string
+    example: en_US
+    description: Language code (e.g. en_US, ar_AR)
+
+  category:
+    type: string
+    enum: [AUTHENTICATION, MARKETING, UTILITY]
+    example: MARKETING
+    description: Template category
+
+  message_send_ttl_seconds:
+    type: integer
+    nullable: true
+    description: >
+      Optional TTL in seconds.
+      AUTHENTICATION: 60–600, UTILITY: 60–3600, or -1 for 30 days.
+      Only applicable to AUTHENTICATION and UTILITY categories.
+
+  components:
+    type: array
+    description: >
+      Array of message template components. Must include one BODY component.
+      Only one HEADER is allowed. FOOTER is optional. BUTTONS are not supported in this version.
+    items:
+      type: object
+      required:
+        - type
+      properties:
+        type:
+          type: string
+          enum: [HEADER, BODY, FOOTER]
+          example: HEADER
+          description: Component type
+
+        format:
+          type: string
+          nullable: true
+          description: >
+            Required only when type is HEADER.
+            One of TEXT, IMAGE, VIDEO, DOCUMENT, LOCATION.
+          enum: [TEXT, IMAGE, VIDEO, DOCUMENT, LOCATION]
+
+        text:
+          type: string
+          nullable: true
+          maxLength: 60
+          description: >
+            Used for HEADER with format TEXT, BODY, or FOOTER.
+            For HEADER TEXT, only one variable {{1}} is allowed.
+
+        example:
+          type: object
+          nullable: true
+          description: >
+            Required when using variables in HEADER TEXT or media in HEADER IMAGE/VIDEO/DOCUMENT.
+          oneOf:
+            - required: [header_text]
+              properties:
+                header_text:
+                  type: array
+                  items:
+                    type: array
+                    items:
+                      type: string
+                  example: [["December 1st"]]
+
+            - required: [header_handle]
+              properties:
+                header_handle:
+                  type: array
+                  items:
+                    type: string
+                  example: ["4::aW..."]

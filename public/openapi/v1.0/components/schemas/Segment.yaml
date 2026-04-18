@@ -1,0 +1,57 @@
+Segment:
+  type: object
+  required:
+    - name
+    - rules
+  properties:
+    id:
+      type: string
+      format: uuid
+      readOnly: true
+      example: "b4d020f8-bd19-4c9e-a3a0-06a12dcbcd62"
+    workspace_id:
+      type: string
+      format: uuid
+      readOnly: true
+      example: "c73398e5-e73d-47b6-91c2-11111abc2222"
+    name:
+      type: string
+      example: "Active Users"
+    description:
+      type: string
+      nullable: true
+      example: "Segment for active users in last 30 days"
+    rules:
+      type: array
+      items:
+        type: object
+        required:
+          - attribute_definition_id
+          - operator
+        properties:
+          id:
+            type: string
+            format: uuid
+            readOnly: true
+            example: "bb2a1123-e3d5-49b6-9b3f-345d9283cbb2"
+          attribute_definition_id:
+            type: string
+            format: uuid
+            example: "afd8917b-13c1-4fa4-b8b5-0a6cbd84a2c0"
+          operator:
+            type: string
+            example: "equals"
+          value:
+            type: string
+            nullable: true
+            example: "active"
+    created_at:
+      type: string
+      format: date-time
+      readOnly: true
+      example: "2025-07-13T14:22:10Z"
+    updated_at:
+      type: string
+      format: date-time
+      readOnly: true
+      example: "2025-07-13T14:24:55Z"

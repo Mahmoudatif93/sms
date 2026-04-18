@@ -1,0 +1,65 @@
+get:
+  summary: Get all members of an organization
+  operationId: getOrganizationMembers
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: The organization identifier
+      schema:
+        type: string
+        format: uuid
+    - name: per_page
+      in: query
+      required: false
+      description: Number of items per page (default 15)
+      schema:
+        type: integer
+        example: 15
+    - name: page
+      in: query
+      required: false
+      description: Page number (default 1)
+      schema:
+        type: integer
+        example: 1
+  responses:
+    '200':
+      description: List of organization members
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: All Organization Members
+              meta:
+                type: object
+                description: Pagination meta
+                properties:
+                  current_page:
+                    type: integer
+                    example: 1
+                  per_page:
+                    type: integer
+                    example: 15
+                  total:
+                    type: integer
+                    example: 120
+              data:
+                type: array
+                items:
+                  $ref: ../../../components/schemas/organization_member.yaml
+    '401':
+      description: Unauthorized
+    '404':
+      description: Organization not found

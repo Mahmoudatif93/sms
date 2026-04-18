@@ -1,0 +1,14 @@
+image: atlassian/default-image:4
+
+pipelines:
+  branches:
+    main:
+      - step:
+          name: "Build, Test and Deploy"
+          script:
+            - pipe: atlassian/ssh-run:0.8.0
+              variables:
+                SSH_USER: "app"
+                SERVER: "8.213.36.171"
+                SSH_KEY: $SSH_KEY
+                COMMAND: "/home/app/code/deploy-out.sh"

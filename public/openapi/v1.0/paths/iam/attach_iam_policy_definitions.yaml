@@ -1,0 +1,70 @@
+post:
+  summary: Attach definitions to an IAM policy
+  operationId: attachDefinitionsToIAMPolicy
+  tags:
+    - IAM
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: policy
+      in: path
+      required: true
+      description: The ID of the IAM policy
+      schema:
+        type: integer
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          type: object
+          required:
+            - definition_ids
+          properties:
+            definition_ids:
+              type: array
+              minItems: 1
+              items:
+                type: integer
+              description: List of definition IDs to attach
+              example: [1, 2, 3]
+  responses:
+    '200':
+      description: Definitions attached successfully
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: Definitions attached successfully
+              data:
+                $ref: ../../components/schemas/iam_policy.yaml
+    '400':
+      description: Some definitions are already attached or invalid
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Some definitions are already attached to this policy.
+              data:
+                type: object
+                properties:
+                  already_attached:
+                    type: array
+                    items:
+                      type: integer
+                    example: [2, 3]
+    '401':
+      description: Unauthorized – authentication failed

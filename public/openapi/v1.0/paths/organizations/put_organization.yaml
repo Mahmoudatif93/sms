@@ -1,0 +1,92 @@
+put:
+  summary: Update an organization by ID
+  operationId: updateOrganization
+  tags:
+    - Organizations
+  security:
+    - BearerAuth: []
+    - AccessKeyAuth: []
+  parameters:
+    - name: organization
+      in: path
+      required: true
+      description: The organization identifier
+      schema:
+        type: string
+        format: uuid
+  requestBody:
+    required: true
+    content:
+      multipart/form-data:
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+              description: Type of organization
+              enum: [governmental, charitable, private]
+              example: private
+            commercial_registration_number:
+              type: string
+              maxLength: 255
+              example: CR-2023-0001
+            unified_number:
+              type: string
+              example: UN-12345678
+            avatarUrl:
+              type: string
+              nullable: true
+              description: Can be null to clear the avatar, or a valid file if `file` is present
+            file:
+              type: string
+              format: binary
+              description: New avatar image to upload
+            file_commercial_register:
+              type: string
+              format: binary
+              description: Commercial register file (CSV, PDF, DOC, DOCX, JPG, PNG, GIF)
+            file_value_added_tax_certificate:
+              type: string
+              format: binary
+              description: VAT certificate file (CSV, PDF, DOC, DOCX, JPG, PNG, GIF)
+  responses:
+    '200':
+      description: Organization updated successfully
+      content:
+        application/json:
+          schema:
+            $ref: ../../components/schemas/organization.yaml
+    '400':
+      description: Validation error or missing required update fields
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Either status or commercial registration number or unified number must be provided
+              data:
+                type: object
+                example: {}
+    '401':
+      description: Unauthorized – authentication failed
+    '500':
+      description: Internal server error (e.g., avatar upload failure)
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: Avatar Upload Failed: Something went wrong
+              data:
+                type: object
+                example: {}

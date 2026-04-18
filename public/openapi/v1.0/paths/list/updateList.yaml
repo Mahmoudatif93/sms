@@ -1,0 +1,63 @@
+/api/workspaces/{workspaceId}/lists/{id}:
+  put:
+    tags:
+      - Lists
+    summary: Update a list by ID
+    operationId: updateList
+    parameters:
+      - name: workspaceId
+        in: path
+        required: true
+        description: Workspace UUID
+        schema:
+          type: string
+          format: uuid
+      - name: id
+        in: path
+        required: true
+        description: List UUID to update
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: "../../../components/schemas/IAMList.yaml"
+    responses:
+      '200':
+        description: List updated successfully
+        content:
+          application/json:
+            schema:
+              $ref: "../../../components/schemas/IAMList.yaml"
+      '400':
+        description: Validation Error
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: Validation Error(s)
+                errors:
+                  type: object
+                  additionalProperties:
+                    type: array
+                    items:
+                      type: string
+      '404':
+        description: List not found
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                message:
+                  type: string
+                  example: List not found

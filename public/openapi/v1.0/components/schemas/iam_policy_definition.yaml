@@ -1,0 +1,25 @@
+type: object
+title: IAMPolicyDefinition
+description: A permission definition tied to an IAM policy.
+required:
+  - id
+  - key
+  - effect
+properties:
+  id:
+    type: integer
+    example: 1
+  key:
+    type: string
+    description: The permission key
+    example: organization:view
+  effect:
+    type: string
+    enum: [allow, deny]
+    description: The access effect of the policy
+    example: allow
+  description:
+    type: string
+    nullable: true
+    description: Optional description of the permission
+    example: Grants view access to organization data
